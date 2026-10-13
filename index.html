@@ -326,6 +326,7 @@ footer{padding-block:6px 40px;text-align:center;font-family:var(--f-latin);font-
       <button class="go" type="submit">내 사주 펼치기</button>
       <p class="err" id="err" role="alert"></p>
       <p class="fine">양력(스마트폰 달력) 기준이에요. 태어난 해 당시의 한국 표준시와 서머타임을 자동으로 반영해요.</p>
+      <p class="fine">펼치기를 누르면 입력하신 정보(이름·생년월일·태어난 시각·성별·출생지)와 풀이 결과가 서비스 개선·통계를 위해 저장돼요.</p>
     </form>
   </section>
 
@@ -1030,9 +1031,25 @@ if(typeof document!=='undefined'){
   function save(v){try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
   const defSettings={place:'seoul',lon:126.98,corr:'lmt',zasi:'night',utcOff:9};
 
+  function logReading(rec){
+    if(!SHEET_ENDPOINT)return;
+    try{
+      const pr=rec.profile||{},rd=rec.reading||{},GL={M:'남자',F:'여자'};
+      const body=new URLSearchParams({
+        at:new Date().toISOString(),name:pr.name||'',gender:GL[pr.gender]||'',
+        birth:pr.birth||'',time:pr.time||'모름',place:pr.place||'',
+        kind:'열람',contact:'',
+        year:rd.year||'',month:rd.month||'',day:rd.day||'',hour:rd.hour||'',
+        dm:rd.dm||'',strength:rd.strength||'',gyeok:rd.gyeok||'',yongsin:rd.yongsin||'',
+        privacy:'',marketing:'',version:LEAD_VER
+      });
+      fetch(SHEET_ENDPOINT,{method:'POST',mode:'no-cors',body}).catch(()=>{});
+    }catch(e){}
+  }
   function show(inp,sample,fresh){
     const r=buildReading(inp,new Date(),{lead:!sample});
     res.innerHTML='<div class="book'+(fresh?' reveal':'')+'">'+(sample?'<div class="ribbon">예시 풀이예요. 위에 내 생일을 적으면 내 사주로 바뀌어요.</div>':'')+r.html+'</div>';
+    if(fresh&&!sample)logReading(r.record);
     initLead(r.record);
     const cp=$('copy'),out=$('copyOut');
     if(cp)cp.addEventListener('click',()=>{
