@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>별빛 동화 사주</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,7 +83,7 @@ form{display:grid;gap:16px;margin-top:18px}
 .field{display:grid;gap:6px;min-width:0}
 .field label,.field .lab{font-size:.85rem;color:var(--ink-soft);letter-spacing:.03em}
 input[type=text],input[type=date],input[type=time]{width:100%;min-width:0;height:50px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink);font-family:var(--f-body);font-size:1rem}
-input:disabled{opacity:.45}
+input:disabled{opacity:.6;background:var(--paper-2)}
 .check{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--ink-soft);cursor:pointer;width:max-content;max-width:100%}
 .check input{width:18px;height:18px;accent-color:var(--royal)}
 .go{height:54px;border:0;border-radius:999px;cursor:pointer;color:#fff;font-family:var(--f-display);font-weight:800;font-size:1.1rem;letter-spacing:.04em;
@@ -113,6 +112,13 @@ input:disabled{opacity:.45}
 .sec{padding:30px 20px;border-top:1px solid var(--line)}
 .sec h3{font-family:var(--f-display);font-weight:800;font-size:1.25rem;color:var(--royal);display:flex;align-items:center;gap:10px;text-wrap:balance}
 .sec h3 svg{flex:none;width:16px;height:16px;color:var(--gold)}
+.deep[open]{padding-bottom:30px}
+.deep>.sec-sum{list-style:none;cursor:pointer;font-family:var(--f-display);font-weight:800;font-size:1.25rem;color:var(--royal);display:flex;align-items:center;gap:10px;text-wrap:balance}
+.deep>.sec-sum::-webkit-details-marker{display:none}
+.deep>.sec-sum svg{flex:none;width:16px;height:16px;color:var(--gold)}
+.deep>.sec-sum .more{margin-left:auto;font-family:var(--f-body);font-weight:600;font-size:0;color:var(--ink-soft);border:1px solid var(--gold);border-radius:999px;padding:3px 12px;white-space:nowrap}
+.deep>.sec-sum .more::after{content:"열기";font-size:.8rem}
+.deep[open]>.sec-sum .more::after{content:"닫기"}
 .sec .intro{color:var(--ink-soft);font-size:.95rem;margin-top:4px}
 .sec p+p{margin-top:10px}
 .sec .body{margin-top:14px}
@@ -163,6 +169,7 @@ input:disabled{opacity:.45}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
 .ghost{height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--gold);background:var(--paper);color:var(--ink);cursor:pointer;font-family:var(--f-body)}
 .ghost:hover{background:var(--paper-2)}
+.ghost:disabled{opacity:.45;cursor:not-allowed}
 #copyOut{display:none;width:100%;height:44px;margin-top:10px}
 .disc{padding:22px 20px 26px;border-top:1px solid var(--line);font-size:.82rem;color:var(--ink-soft);line-height:1.7}
 
@@ -285,11 +292,11 @@ footer{padding-block:6px 40px;text-align:center;font-family:var(--f-latin);font-
       <div class="row">
         <div class="field">
           <label for="date">생년월일 (양력)</label>
-          <input id="date" type="date" min="1900-01-01" max="2100-12-31" value="1995-03-15" required>
+          <input id="date" type="date" min="1900-01-01" max="2100-12-31" required>
         </div>
         <div class="field">
           <label for="time">태어난 시간</label>
-          <input id="time" type="time" value="14:30">
+          <input id="time" type="time">
         </div>
       </div>
       <label class="check" for="unk"><input id="unk" type="checkbox"> 태어난 시간을 몰라요</label>
@@ -302,10 +309,6 @@ footer{padding-block:6px 40px;text-align:center;font-family:var(--f-latin);font-
           <label for="place">태어난 곳</label>
           <select id="place"></select>
         </div>
-      </div>
-      <div class="row" id="otherRow" hidden>
-        <div class="field"><label for="utc">시차 (UTC 기준, 시간)</label><input id="utc" type="number" step="0.25" min="-12" max="14" value="9" inputmode="decimal"></div>
-        <div class="field"><label for="lon">경도 (동경 +, 서경 -)</label><input id="lon" type="number" step="0.01" min="-180" max="180" value="139.69" inputmode="decimal"></div>
       </div>
       <details class="adv">
         <summary>세부 설정</summary>
@@ -322,7 +325,7 @@ footer{padding-block:6px 40px;text-align:center;font-family:var(--f-latin);font-
       </details>
       <button class="go" type="submit">내 사주 펼치기</button>
       <p class="err" id="err" role="alert"></p>
-      <p class="fine">양력 기준이에요. 해외 출생이라면 시차와 경도를 직접 적어 주세요. 한국에서 태어났다면 당시의 표준시와 서머타임을 자동으로 반영해요.</p>
+      <p class="fine">양력(스마트폰 달력) 기준이에요. 태어난 해 당시의 한국 표준시와 서머타임을 자동으로 반영해요.</p>
     </form>
   </section>
 
@@ -704,6 +707,59 @@ const EL_INFO=[
   {k:'결단과 원칙',c:'흰색과 은빛',act:'불필요한 물건 비우기, 마감 기한 정하기, 할 일 줄이기',dir:'서쪽',job:'금융, 법률, 의료, 기계·공학'},
   {k:'지혜와 유연함',c:'남색과 깊은 푸른빛',act:'충분히 자기, 물 자주 마시기, 조용히 책 읽기',dir:'북쪽',job:'연구, 유통·무역, 여행, 정보 분석'}
 ];
+/* ---------- 20-30대 공감 노트 ---------- */
+const DM_NOW=[
+ {me:['“괜찮아, 내가 할게” 하다가 일이 전부 내 앞으로 와 있다','한번 정한 건 주변이 뭐라 해도 밀고 간다','틀린 걸 알아도 먼저 사과하기가 제일 어렵다','일요일 밤, 다음 주 계획이 이미 머릿속에 짜여 있다','가끔은 그냥 아무 생각 없이 쉬고 싶은데 그게 잘 안 된다'],
+  love:'좋아하면 직진이고 밀당은 체질에 안 맞아요. 대신 “내가 다 맞춰 줄 순 없다”는 선을 미리 말해 두면 오래가요.',work:'리더 자리에서 빛나는 타입이에요. 번아웃은 “내가 안 하면 안 돼”에서 시작되니 일부는 믿고 넘기세요.',money:'필요한 곳엔 크게 쓰고, 불필요한 구독은 방치하는 편이에요. 고정지출 점검 한 번이면 충분해요.',friend:'단톡방에선 조용한데 정작 결정은 내가 하고 있죠. 의견을 한 템포 먼저 물어봐 주면 관계가 편해져요.',charge:'숲이나 공원 걷기, 폰 없는 한 시간이 가장 잘 충전돼요.'},
+ {me:['눈치가 빨라서 분위기 읽다가 내 마음은 뒤로 미룬다','“다 괜찮아요” 하고 집에 와서 혼자 곱씹는다','겉으론 순한데 속으로는 의외로 고집이 세다','환경이 바뀌어도 금방 적응하는 편이다','칭찬 한마디에 일주일을 버틴다'],
+  love:'상대에게 맞추다가 나를 잃기 쉬워요. 서운한 건 쌓아 두지 말고 그날 가볍게 말하는 연습이 필요해요.',work:'사람 사이 조율과 기획, 디테일에서 강해요. 거절을 못 해 업무가 늘어나니 “이번 주는 여기까지”를 연습해요.',money:'기분 따라 소소하게 새는 타입이에요. 자동이체로 저축부터 빼 두면 마음이 편해요.',friend:'모임의 분위기 메이커 겸 상담소예요. 내 얘기도 하는 날을 일부러 만들어 보세요.',charge:'꽃, 식물, 좋아하는 카페 자리에서 혼자 멍때리기.'},
+ {me:['분위기를 띄우는 건 잘하는데 집에 오면 급방전된다','감정이 얼굴에 다 나와서 숨기기를 못 한다','관심받는 게 좋으면서도 가끔 부담스럽다','칭찬받으면 두 배로 힘이 난다','계획은 크게 세우는데 마무리가 아쉬울 때가 있다'],
+  love:'호감 표현이 솔직하고 뜨거워서 시작이 빨라요. 열기가 식을 때 실망하지 않도록 일상의 루틴을 함께 만들어 보세요.',work:'발표, 영업, 홍보, 사람 앞에 서는 일에 강해요. 시작의 열정이 식기 전에 마감 습관을 붙이세요.',money:'경험과 사람에게 쓰는 돈이 아깝지 않은 타입이에요. 월 “즐거움 예산”을 정해 두면 죄책감이 줄어요.',friend:'어디서나 인기 있지만 깊은 얘기를 나눌 사람은 따로 두세요.',charge:'햇볕 쬐며 운동하기, 좋아하는 사람들과 크게 웃기.'},
+ {me:['혼자 있는 시간이 꼭 있어야 한다','한 번 마음 준 사람이나 일에는 끝까지 간다','말은 적은데 속으로는 생각이 열 갈래다','읽씹당하면 혼자 오래 곱씹는다','분위기보다 진심이 통하는 대화가 좋다'],
+  love:'마음을 천천히 열고 깊게 줘요. 대신 속마음을 안 말하면 상대는 모르니 “오늘 좀 서운했어” 한 줄이 큰 도움이 돼요.',work:'깊이 파고드는 연구, 글, 디자인, 분석에서 실력이 드러나요. 완벽하게 준비하느라 제출이 늦어지지 않게 하세요.',money:'꼭 필요한 데만 쓰고 좋은 건 오래 쓰는 타입이에요. 취미 소비는 한도만 두면 문제없어요.',friend:'친구 수보다 깊이예요. 오래된 친구 한두 명이 큰 자산이에요.',charge:'조용한 방, 촛불·조명, 좋아하는 음악과 책.'},
+ {me:['가볍게 약속 잡는 건 어려운데 한번 한 약속은 꼭 지킨다','주변에서 “너 믿는다”는 말을 자주 듣는다','변화가 갑자기 오면 일단 멈칫한다','고민 상담을 해 주는 쪽이 더 많다','내 일정보다 남의 부탁이 먼저일 때가 있다'],
+  love:'신중하게 시작하고 오래 가는 연애를 해요. 표현이 서툴 뿐 마음은 깊으니 “좋아한다”는 말을 일부러 자주 꺼내 보세요.',work:'꾸준함과 신뢰로 인정받아요. 새 방식이 두려울 때는 작게 시험해 보는 것부터 시작해요.',money:'안정적으로 모으는 편이에요. 가끔은 나를 위한 큰 소비도 허락해 주세요.',friend:'모임의 든든한 축이에요. 도움을 받는 연습도 같이 해 두세요.',charge:'규칙적인 식사와 수면, 자연 속 느긋한 산책.'},
+ {me:['사람들 챙기다 정작 내 컨디션은 놓친다','디테일을 잘 봐서 실수를 먼저 발견한다','“그냥 내가 하고 말지” 하는 순간이 많다','작은 서운함을 오래 기억한다','좋아하는 사람에게는 정성을 다한다'],
+  love:'다정하고 헌신적이에요. 주는 만큼 돌려받지 못하면 지치니, 바라는 걸 부드럽게 말하는 게 좋아요.',work:'꼼꼼한 관리, 서포트, 운영에 강해요. 내 몫의 성과를 어필하는 연습을 해 보세요.',money:'아껴 모으는 힘이 있지만 가족·친구에게 쓰는 돈이 커질 수 있어요. 선을 정해 두세요.',friend:'궂은일을 먼저 맡는 사람이라 고마워하는 사람이 많아요. 거절도 연습해 봐요.',charge:'정리정돈, 따뜻한 음식, 집에서 나만의 루틴 만들기.'},
+ {me:['불의나 애매한 태도를 보면 참기 어렵다','싫은 소리는 직접 하는데 그 뒤에 마음이 쓰인다','한번 신뢰하면 의리를 끝까지 지킨다','결정이 빠르고 미루는 걸 싫어한다','쉬는 날도 뭔가 해야 할 것 같아 불안하다'],
+  love:'확실한 관계를 좋아해요. 말투가 세게 들릴 수 있으니 “내 마음은 이래”로 시작하면 부드러워져요.',work:'결단이 필요한 자리, 위기 대응, 실무에서 믿음을 얻어요. 팀원 속도에 맞추는 것이 다음 단계의 숙제예요.',money:'계획과 원칙이 있어요. 충동구매는 적지만 한 번 지르면 큰 편이에요.',friend:'의리 있고 솔직해서 믿는 사람이 많아요. 가끔은 한 템포 쉬고 말해 보세요.',charge:'운동으로 땀 내기, 깔끔하게 비운 공간.'},
+ {me:['사소한 디테일이 맞지 않으면 신경이 쓰인다','자존심이 센 편이라 약한 모습 보이기가 싫다','결과물이 마음에 안 들면 처음부터 다시 한다','외모나 취향에 투자하는 걸 아끼지 않는다','칭찬은 쑥스러운데 인정받고 싶다'],
+  love:'기준이 높아 신중하지만 마음을 열면 세심하게 챙겨요. 완벽한 사람 대신 “같이 맞춰 갈 사람”을 찾으세요.',work:'퀄리티가 중요한 일, 디자인·기획·전문직에서 강해요. 80점에서 제출하는 연습이 번아웃을 막아 줘요.',money:'좋은 물건을 오래 쓰는 타입이에요. 비교 쇼핑에 쓰는 시간을 줄이는 게 가성비예요.',friend:'소수와 깊게 지내요. 속마음을 털어놓을 사람 하나는 꼭 곁에 두세요.',charge:'좋은 향, 깨끗한 침구, 취향에 맞는 공간에서 쉬기.'},
+ {me:['생각이 많고 하고 싶은 것도 많아서 우선순위가 헷갈린다','자유를 속박당하면 숨이 막힌다','새로운 곳, 새로운 사람에게 호기심이 많다','한곳에 오래 있으면 답답해진다','눈치 안 보는 척하지만 사실 신경 쓰고 있다'],
+  love:'넓은 마음으로 사랑하지만 구속은 싫어요. 서로의 자유를 존중하는 관계를 미리 말해 두면 편해요.',work:'변화가 많고 스케일이 큰 일, 기획·유통·해외·프리랜스에 잘 맞아요. 벌린 일을 하나씩 마무리하는 습관이 필요해요.',money:'기회가 오면 크게 움직여요. 비상금은 따로 묶어 두세요.',friend:'다양한 사람을 만나지만 정리는 서툴러요. 가끔 연락을 정리해 보세요.',charge:'여행, 물가, 낯선 동네 산책, 충분한 수면.'},
+ {me:['혼자 있을 땐 상상이 끝도 없이 펼쳐진다','겉은 차분해 보이지만 마음은 파도치는 날이 있다','남의 감정이 쉽게 옮는다','직관이 맞아서 놀란 적이 많다','하고 싶은 말을 삼키고 후회한 적이 있다'],
+  love:'감정을 깊이 느끼는 만큼 상처도 깊어요. 상대의 반응을 혼자 해석하지 말고 직접 물어보세요.',work:'기획, 글, 상담, 창작처럼 감각을 쓰는 일에 강해요. 마감과 체력 관리가 곧 실력이 돼요.',money:'감정 따라 소비가 흔들릴 수 있어요. “24시간 뒤에 사기”가 좋은 방패예요.',friend:'공감 능력이 높아 사람들이 털어놓아요. 감정 쓰레기통이 되지 않게 선을 그으세요.',charge:'따뜻한 물에 샤워, 비 오는 날 음악, 일기 쓰기.'}
+];
+const LEVEL_NOW={
+ xstrong:'“내가 하는 게 빠르다”는 생각이 잦아요. 일 잘하는 사람이지만, 위임하는 순간 팀이 한 단계 올라가요.',
+ strong:'주관이 뚜렷하고 추진력이 있어요. 퇴근 뒤에도 에너지가 남는 편이라 부업이나 갓생 루틴과 잘 맞아요.',
+ mid:'상황에 맞춰 유연하게 움직이는 타입이에요. 선택지가 많아 고민이 길어질 수 있으니 기한을 정하면 좋아요.',
+ weak:'주변 분위기와 사람의 영향을 크게 받아요. 환경과 사람을 잘 고르는 것이 곧 내 컨디션 관리예요.',
+ xweak:'쉽게 지치고 방전돼요. 의지가 약한 게 아니라 에너지 결이 섬세한 거라, 쉬는 시간을 먼저 일정에 넣어 두세요.'
+};
+const CAT_NOW=[
+ '요즘 키워드: 비교와 자존심. 친구의 승진·결혼·SNS가 신경 쓰일 때가 있어요. 남 대신 어제의 나와 비교해 보세요.',
+ '요즘 키워드: 표현과 이직·창작 욕구. “이대로 괜찮나?” 하는 마음이 올라올 수 있어요. 작은 사이드 프로젝트가 숨통이 돼요.',
+ '요즘 키워드: 돈과 현실. 월급, 집, 재테크 이야기에 마음이 쓰여요. 숫자로 적어 보면 막연한 불안이 줄어요.',
+ '요즘 키워드: 평가와 책임. 상사 눈치, 시험, 역할 부담이 크게 느껴져요. 모든 기대를 다 채우려 하지 않아도 괜찮아요.',
+ '요즘 키워드: 배움과 불안. 자격증, 자기계발, 방향 고민이 많아요. 준비만 길어지면 작은 실행 하나를 먼저 해 보세요.'
+];
+function nowSection(a,dm){
+  const n=DM_NOW[dm];
+  const top=[0,1,2,3,4].sort((x,y)=>a.cat[y]-a.cat[x])[0];
+  return '<div class="sec">'+H('요즘의 나, 이런 적 있죠?')+
+    '<p class="intro">일·연애·돈·관계에서 20·30대가 자주 겪는 순간으로 풀어 봤어요. 고개가 끄덕여지는 게 많을수록 지금의 나와 가까워요.</p>'+
+    '<p class="minor">이런 순간, 있지 않나요?</p>'+
+    ul(n.me,'dots')+
+    '<h4 class="sub-h">연애할 때</h4><p>'+n.love+'</p>'+
+    '<h4 class="sub-h">일할 때 · 번아웃 신호</h4><p>'+n.work+'</p>'+
+    '<h4 class="sub-h">돈 쓸 때</h4><p>'+n.money+'</p>'+
+    '<h4 class="sub-h">친구·인간관계</h4><p>'+n.friend+'</p>'+
+    '<h4 class="sub-h">방전됐을 때 충전법</h4><p>'+n.charge+'</p>'+
+    '<h4 class="sub-h">에너지 스타일</h4><p>'+LEVEL_NOW[a.level]+'</p>'+
+    '<h4 class="sub-h">요즘 마음에 자주 뜨는 고민</h4><p>'+CAT_NOW[top]+'</p></div>';
+}
+
 const POS_NAME=['연주','월주','일주','시주'];
 
 /* =========================================================
@@ -772,7 +828,7 @@ function buildReading(inp,now,opts){
     '<div class="tags center"><span class="tag">'+L.n+'</span><span class="tag">'+a.gyeok+(a.gyeokKind==='rok'?' · 건록격':a.gyeokKind==='in'?' · 양인격':'')+'</span><span class="tag">용신 '+elTag(ys.primary)+'</span></div></div>';
 
   const s1='<div class="sec">'+H('네 개의 기둥')+
-    '<p class="intro">태어난 해, 달, 날, 시간이 각각 두 글자씩 새겨져요. 일주의 윗글자가 “나”를 뜻합니다. 글자 아래 작은 글씨는 일간 기준 십성, 12운성, 지장간이에요.</p>'+
+    '<p class="intro">태어난 해·달·날·시간이 각각 두 글자로 새겨져요. 가운데 일주의 윗글자가 바로 “나”예요.</p>'+
     '<div class="pillars">'+pillarHTML('시주',p.hour,false,dm)+pillarHTML('일주',p.day,true,dm)+pillarHTML('월주',p.month,false,dm)+pillarHTML('연주',p.year,false,dm)+'</div></div>';
 
   const legend=EL.map((n,i)=>'<li style="--c:var(--e'+i+')"><i></i><span>'+n+'('+EL_H[i]+') · '+EL_INFO[i].k+'</span><em>'+pct(a.elShare[i])+'%</em></li>').join('');
@@ -800,8 +856,9 @@ function buildReading(inp,now,opts){
   const gyeokKey=a.gyeok;
   let gyeokText=GYEOK_TXT[gyeokKey];
   if(a.gyeokKind==='in')gyeokText='월지에 겁재가 제왕의 힘으로 자리한 양인격이에요. 강한 추진력과 승부욕으로 위기를 돌파하는 틀이고, 그 힘을 잘 다스리면 큰 성과로 이어져요.';
+  const sNow=nowSection(a,dm);
   const s4='<div class="sec">'+H('십성과 격국')+
-    '<p class="intro">일간을 기준으로 다른 글자들이 어떤 역할을 하는지 나눈 것이 십성이에요. 삶의 에너지가 어느 쪽으로 쓰이는지 보여 줍니다.</p>'+
+    '<p class="intro">내 에너지가 어느 쪽으로 더 쓰이는지 보여 주는 지도예요. 긴 막대일수록 올해의 나와 잘 맞닿아 있어요.</p>'+
     '<ul class="bars">'+catRows+'</ul>'+
     '<h4 class="sub-h">삶의 틀, 격국</h4><p>'+esc(gyeokText)+'</p>'+
     '<h4 class="sub-h">두드러지는 십성</h4>'+
@@ -818,11 +875,11 @@ function buildReading(inp,now,opts){
   rel.stems.forEach(s=>relItems.push('<li><b>'+POS[s.a]+'간 '+STEM_H[s.sa]+' · '+POS[s.b]+'간 '+STEM_H[s.sb]+' 천간합</b><br><span class="minor">서로 끌어당기는 관계로, '+elTag(s.el)+'의 기운으로 변하려는 성질이 있어요. 합이 되더라도 계절과 주변 글자가 받쳐 주어야 실제로 변해요.</span></li>'));
   const ssTags=ss.map(x=>'<li><b>'+x.name+'</b> ('+x.where.join(', ')+')<br><span class="minor">'+SINSAL_TXT[x.name]+'</span></li>').join('');
   const gmText=gm.where.length?'<li><b>공망</b> ('+gm.where.join(', ')+')<br><span class="minor">일주 기준으로 비어 있는 자리('+gm.empty.map(b=>BR_H[b]).join('·')+')에 해당해요. 그 영역에 대한 기대가 크거나, 반대로 집착을 내려놓고 자유로워지는 쪽으로 작용하기도 해요.</span></li>':'';
-  const s5='<div class="sec">'+H('일지와 지지의 만남')+
-    '<p class="intro">일지는 나의 가장 가까운 자리로, 배우자궁이라고도 불러요.</p>'+
+  const s5='<details class="sec deep"><summary class="sec-sum">'+SPK+'일지와 지지의 만남, 더 깊이 보기<span class="more">열기</span></summary>'+
+    '<p class="intro">조금 더 전문적인 부분이에요. 일지는 나와 가장 가까운 자리라 “배우자궁”이라고도 불러요.</p>'+
     '<div class="body"><p><b>일지 '+BR_H[dayB]+'('+BR[dayB]+EL[BR_EL[dayB]]+')</b>의 12운성은 <b>'+unsung(dm,dayB)+'</b>이에요. '+esc(UNS_TXT[unsung(dm,dayB)])+'</p><p>'+esc(SPOUSE[dayB])+'</p></div>'+
     '<h4 class="sub-h">합·충·형</h4>'+(relItems.length?'<ul class="rels">'+relItems.join('')+'</ul>':'<p class="minor">원국의 네 지지 사이에 뚜렷한 합·충·형이 없어요. 기운이 서로 크게 부딪히지 않고 고요하게 놓여 있는 구조예요.</p>')+
-    ((ssTags||gmText)?'<h4 class="sub-h">신살과 공망</h4><ul class="rels">'+ssTags+gmText+'</ul>':'')+'</div>';
+    ((ssTags||gmText)?'<h4 class="sub-h">신살과 공망</h4><ul class="rels">'+ssTags+gmText+'</ul>':'')+'</details>';
 
   const climText=ys.climate===1?season+' 한가운데 태어나 차가운 기운이 강해서, 불(火)의 따뜻함이 먼저 필요해요(조후).':ys.climate===4?season+' 한가운데 태어나 열기가 강해서, 물(水)의 시원함이 먼저 필요해요(조후).':'';
   const kindText={strong:'일간의 힘이 넘치는 편이라, 기운을 덜어 주고 다듬어 주는 쪽(식상·재성·관성)이 균형을 잡아 줘요.',weak:'일간의 힘이 부족한 편이라, 나를 북돋는 쪽(인성·비겁)이 힘이 돼요.',mid:'기운이 고른 편이라, 가장 여린 꽃잎을 채우는 방식으로 균형을 맞춰요.'}[ys.kind];
@@ -859,7 +916,7 @@ function buildReading(inp,now,opts){
     '<p class="body">'+esc(YEAR_TXT[ycat])+'</p>'+
     (yrLines.length?'<h4 class="sub-h">원국과의 만남</h4>'+ul(yrLines,'dots')+'<p class="minor">합은 인연과 협력, 충은 변화와 이동, 형은 마찰과 단련으로 읽어요.</p>':'')+'</div>';
 
-  const tz=inp.settings.place==='other'?offLabel(c.offMin):(c.offMin===540?'한국 표준시':'당시 한국 시각('+offLabel(c.offMin)+')');
+  const tz=c.offMin===540?'한국 표준시':'당시 한국 시각('+offLabel(c.offMin)+')';
   const notes=[];
   const dPrev=Math.abs(c.tPrev-c.jd)*1440,dNext=Math.abs(c.tNext-c.jd)*1440;
   if(Math.min(dPrev,dNext)<90&&inp.hasTime)notes.push('출생 시각이 절기 시각과 가까워요. 월주(경우에 따라 연주)가 바뀌는 경계라서, 분 단위 출생 시각이 정확한지 한 번 확인해 보세요.');
@@ -879,7 +936,7 @@ function buildReading(inp,now,opts){
     '<div class="actions"><button class="ghost" type="button" id="copy">내 동화 한 줄 복사</button></div>'+
     '<input id="copyOut" type="text" readonly aria-label="복사할 문장"></div>';
 
-  const lead='<div class="sec lead" id="lead" hidden>'+H('새 프로그램 소식 받아보기 (선택)')+
+  const lead='<div class="sec lead" id="lead">'+H('새 프로그램 소식 받아보기 (선택)')+
     '<p class="intro">앞으로 제공될 새 프로그램과 이벤트 소식을 보내 드려요. 등록하지 않으면 입력한 정보는 서버에 저장되지 않고 이 기기에만 남아요. 풀이는 동의 없이도 그대로 볼 수 있어요.</p>'+
     '<form id="leadForm" novalidate>'+
       '<label class="consent" for="c1"><input id="c1" type="checkbox"><span>(선택) 개인정보 수집·이용에 동의해요. 연락처와 함께 이름, 성별, 생년월일·태어난 시각, 출생지, 풀이 결과 요약이 저장돼요.</span></label>'+
@@ -894,7 +951,7 @@ function buildReading(inp,now,opts){
       '<div class="field"><label for="contact">이메일 또는 휴대폰 번호</label><input id="contact" type="text" inputmode="email" autocomplete="off" maxlength="120" placeholder="예) name@example.com 또는 010-1234-5678" disabled></div>'+
       '<button class="go sm" id="leadGo" type="submit" disabled>소식 받기 등록</button>'+
       '<p class="err ok" id="leadMsg" role="status"></p>'+
-    '</form>'+
+    '</form><p class="minor" id="leadNote" hidden></p>'+
     '<div id="leadDone" hidden><p class="body"><b id="leadDoneTxt"></b></p><div class="actions"><button class="ghost" id="leadCancel" type="button">등록 취소</button></div><p class="minor" id="leadMsg2" role="status"></p></div>'+
     '<div id="leadOwner" class="owner" hidden><h4 class="sub-h">받은 연락처 (운영자에게만 보여요)</h4><p class="minor" id="leadCount"></p><div class="tbl"><table id="leadTable"></table></div><div class="actions"><button class="ghost" id="leadSheet" type="button">스프레드시트로 내려받기</button></div><p class="minor" id="leadSheetMsg" role="status"></p></div>'+
     '</div>';
@@ -904,13 +961,13 @@ function buildReading(inp,now,opts){
   const nmP=x=>x?STEM[x[0]]+BR[x[1]]:'미상';
   const share=(inp.name?inp.name+'님의 사주: ':'나의 사주: ')+[p.year,p.month,p.day,p.hour].map(nmP).join(' ')+' ('+dayName+'일주 · '+L.n+' · 용신 '+EL[ys.primary]+')';
   const pn=x=>x?STEM_H[x[0]]+BR_H[x[1]]+'('+STEM[x[0]]+BR[x[1]]+')':'';
-  const placeName=inp.settings.place==='other'?'해외·직접 입력':((PLACES.find(x=>x[0]===inp.settings.place)||[0,'서울'])[1]);
+  const placeName=(PLACES.find(x=>x[0]===inp.settings.place)||[0,'서울'])[1];
   const two=n=>String(n).padStart(2,'0');
   const record={
     profile:{name:inp.name||'',gender:inp.gender||'',birth:inp.y+'-'+two(inp.m)+'-'+two(inp.d),time:inp.hasTime?two(inp.h)+':'+two(inp.mi):'',place:placeName},
     reading:{year:pn(p.year),month:pn(p.month),day:pn(p.day),hour:pn(p.hour),dm:STEM[dm]+EL[a.de],strength:L.n,gyeok:(a.gyeokKind==='rok'?'건록격':a.gyeokKind==='in'?'양인격':a.gyeok+'격'),yongsin:EL[ys.primary]}
   };
-  return {html:cover+s1+s2+s3+s4+s5+s6+s7+s8+s9+(opts.lead?lead:'')+disc,share,record};
+  return {html:cover+s1+s2+s3+sNow+s4+s5+s6+s7+s8+s9+(opts.lead?lead:'')+disc,share,record};
 }
 
 /* ---------- 꽃밭과 꽃잎 ---------- */
@@ -964,12 +1021,10 @@ const PLACES=[['seoul','서울',126.98],['incheon','인천',126.70],['suwon','�
   ['daegu','대구',128.60],['andong','안동',128.73],['pohang','포항',129.37],['ulsan','울산',129.31],['busan','부산',129.08],['changwon','창원',128.68],['jinju','진주',128.11],['jeju','제주',126.53]];
 if(typeof document!=='undefined'){
   const $=id=>document.getElementById(id);
-  const form=$('f'),unk=$('unk'),time=$('time'),err=$('err'),res=$('result'),placeSel=$('place'),otherRow=$('otherRow');
+  const form=$('f'),unk=$('unk'),time=$('time'),err=$('err'),res=$('result'),placeSel=$('place');
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const KEY='sjDongwhaInput2';
   PLACES.forEach(([k,n])=>{const o=document.createElement('option');o.value=k;o.textContent=n;placeSel.appendChild(o);});
-  const oo=document.createElement('option');oo.value='other';oo.textContent='해외·직접 입력';placeSel.appendChild(oo);
-  placeSel.addEventListener('change',()=>{otherRow.hidden=placeSel.value!=='other';});
   function readSaved(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
   function save(v){try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
   const defSettings={place:'seoul',lon:126.98,corr:'lmt',zasi:'night',utcOff:9};
@@ -1040,18 +1095,20 @@ if(typeof document!=='undefined'){
   async function initLead(rec){
     const box=$('lead');if(!box)return;
     const {db,user}=await caps();
-    if(!db||!user||$('lead')!==box)return;
-    const id=await user.id();
-    if(!id||$('lead')!==box)return;
+    if($('lead')!==box)return;
+    const off=t=>{const n=$('leadNote');n.textContent=t;n.hidden=false;['c1','c2','contact','leadGo'].forEach(k=>{$(k).disabled=true;});};
+    if(!db||!user){off('이 화면에서는 등록 기능을 쓸 수 없어요. Claude에 로그인한 상태에서 공유받은 링크를 열면 입력할 수 있어요.');return;}
+    let id=null;try{id=await user.id();}catch(e){}
+    if($('lead')!==box)return;
+    if(!id){off('등록은 Claude에 로그인한 상태에서만 가능해요. 로그인 후 다시 열어 주세요.');return;}
     const ref=db.doc('leads/'+id);
     const c1=$('c1'),c2=$('c2'),inp=$('contact'),go=$('leadGo'),msg=$('leadMsg'),msg2=$('leadMsg2'),form=$('leadForm'),done=$('leadDone'),cancel=$('leadCancel'),doneTxt=$('leadDoneTxt');
     let data=null;
     try{const s=await ref.get();if(s.exists)data=s.data();}catch(e){}
     if($('lead')!==box)return;
-    box.hidden=false;
-    const paint=()=>{form.hidden=!!data;done.hidden=!data;if(data)doneTxt.textContent='등록되어 있어요 · '+maskContact(data.contact,data.kind);};
+        const paint=()=>{form.hidden=!!data;done.hidden=!data;if(data)doneTxt.textContent='등록되어 있어요 · '+maskContact(data.contact,data.kind);};
     paint();
-    const sync=()=>{const ok=c1.checked&&c2.checked;inp.disabled=!ok;go.disabled=!ok;};
+    const sync=()=>{const ok=c1.checked&&c2.checked;inp.disabled=!ok;go.disabled=!ok;inp.placeholder=ok?'예) name@example.com 또는 010-1234-5678':'위 두 항목에 체크하면 입력할 수 있어요';};
     c1.addEventListener('change',sync);c2.addEventListener('change',sync);sync();
     const owner=await user.isOwner();
     const COLS=['등록일시','이름','성별','생년월일','태어난 시각','출생지','연락처 종류','연락처','연주','월주','일주','시주','일간','신강·신약','격국','용신','개인정보 수집·이용 동의','광고성 정보 수신 동의','동의 문구 버전'];
@@ -1115,19 +1172,12 @@ if(typeof document!=='undefined'){
     if(y<1900||y>2100)return {error:'1900년부터 2100년 사이의 날짜를 입력해 주세요.'};
     const dt=new Date(y,m-1,d);
     if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d)return {error:'존재하지 않는 날짜예요. 다시 확인해 주세요.'};
-    let h=12,mi=0;const hasTime=!unk.checked;
-    if(hasTime){
-      const t=time.value;
-      if(!/^\d{2}:\d{2}$/.test(t))return {error:'태어난 시간을 입력하거나 “몰라요”를 체크해 주세요.'};
-      [h,mi]=t.split(':').map(Number);
-    }
-    const S={place:placeSel.value,corr:$('corr').value,zasi:$('zasi').value,utcOff:9,lon:126.98};
-    if(S.place==='other'){
-      const u=parseFloat($('utc').value),lo=parseFloat($('lon').value);
-      if(!isFinite(u)||u<-12||u>14)return {error:'시차(UTC)는 -12에서 14 사이의 숫자로 적어 주세요.'};
-      if(!isFinite(lo)||lo<-180||lo>180)return {error:'경도는 -180에서 180 사이의 숫자로 적어 주세요. 동경은 +, 서경은 -예요.'};
-      S.utcOff=u;S.lon=lo;
-    }else{S.lon=PLACES.find(p=>p[0]===S.place)[2];}
+    let h=12,mi=0;const t=time.value;
+    const hasTime=!unk.checked&&/^\d{2}:\d{2}$/.test(t);
+    if(hasTime){[h,mi]=t.split(':').map(Number);}
+    let S={place:placeSel.value,corr:$('corr').value,zasi:$('zasi').value,utcOff:9,lon:126.98};
+    const pl=PLACES.find(p=>p[0]===S.place)||PLACES.find(p=>p[0]==='seoul');
+    S.place=pl[0];S.lon=pl[2];
     return {name:$('name').value.trim(),y,m,d,h,mi,hasTime,gender:$('gender').value,settings:S};
   }
   function fill(s){
@@ -1136,18 +1186,23 @@ if(typeof document!=='undefined'){
     if(!s.hasTime){unk.checked=true;time.disabled=true;}else{time.value=String(s.h).padStart(2,'0')+':'+String(s.mi).padStart(2,'0');}
     $('gender').value=s.gender||'';
     const S=s.settings||defSettings;
-    placeSel.value=S.place;otherRow.hidden=S.place!=='other';
-    if(S.place==='other'){$('utc').value=S.utcOff;$('lon').value=S.lon;}
+    placeSel.value=(S.place==='other'?'seoul':S.place);
     $('corr').value=S.corr;$('zasi').value=S.zasi;
   }
   unk.addEventListener('change',()=>{time.disabled=unk.checked;});
   form.addEventListener('submit',e=>{
     e.preventDefault();
     const inp=readForm();
-    if(inp.error){err.textContent=inp.error;return;}
+    if(inp.error){err.textContent=inp.error;if(err.scrollIntoView)err.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});return;}
     err.textContent='';
-    save(inp);
-    show(inp,false,true);
+    try{
+      save(inp);
+      show(inp,false,true);
+    }catch(ex){
+      err.textContent='풀이를 그리는 중 문제가 생겼어요. 입력을 확인하고 다시 시도해 주세요. ('+(ex&&ex.message?ex.message:'오류')+')';
+      if(err.scrollIntoView)err.scrollIntoView({behavior:'auto',block:'center'});
+      return;
+    }
     if(res.scrollIntoView)res.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
   });
 
@@ -1165,5 +1220,3 @@ if(typeof document!=='undefined'){
 }
 
 </script>
-
-</body></html>
